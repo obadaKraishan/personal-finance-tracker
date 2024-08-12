@@ -1,19 +1,26 @@
-const loadEvents = require('../utils/loadEvents'); // Import the function to load events from JSON
-const Event = require('../models/Event'); // For creating new events in MongoDB
+const fs = require('fs');
+const path = require('path');
+const loadEvents = require('../utils/loadEvents');
 
-exports.createEvent = async (req, res) => {
-  const { name, description, date } = req.body;
+exports.createEvent = (req, res) => {
+  const events = loadEvents(); // Load existing events from the JSON file
+  const newEvent = {
+    id: Date.now().toString(), // Generate a unique ID for the event
+    ...req.body
+  };
+
+  events.push(newEvent); // Add the new event to the list
+
   try {
-    const newEvent = new Event({ name, description, date, organizer: req.user.id });
-    const event = await newEvent.save();
-    res.json(event);
+    fs.writeFileSync(path.join(__dirname, '../data/events.json'), JSON.stringify(events, null, 2));
+    res.status(201).json(newEvent); // Respond with the newly created event
   } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server error');
+    console.error('Failed to save event:', err);
+    res.status(500).json({ message: 'Failed to save event' });
   }
 };
 
-exports.getEvents = async (req, res) => {
+exports.getEvents = (req, res) => {
   try {
     const events = loadEvents(); // Load events from the JSON file
     res.json(events);

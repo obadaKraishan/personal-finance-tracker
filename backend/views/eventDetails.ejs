@@ -1,9 +1,88 @@
 <%- include('partials/header') %>
 
-<main>
-  <h2><%= event.name %></h2>
-  <p><%= event.description %></p>
-  <p>Date: <%= event.date %></p>
+<main class="container mt-5">
+  <h2 class="mb-4"><%= event.name %></h2>
+
+  <!-- Event Description -->
+  <div class="mb-4">
+    <h5>Description</h5>
+    <p><%= event.description %></p>
+  </div>
+
+  <!-- Event Date and Organizer -->
+  <div class="mb-4">
+    <h5>Date & Organizer</h5>
+    <p><strong>Date:</strong> <%= event.date %></p>
+    <p><strong>Organizer:</strong> <%= event.organizer %></p>
+  </div>
+
+  <!-- Event Location -->
+  <div class="mb-4">
+    <h5>Location</h5>
+    <p><strong>Venue:</strong> <%= event.location.venue %></p>
+    <p><strong>City:</strong> <%= event.location.city %></p>
+    <p><strong>State:</strong> <%= event.location.state %></p>
+    <p><strong>Country:</strong> <%= event.location.country %></p>
+  </div>
+
+  <!-- Event Categories -->
+  <div class="mb-4">
+    <h5>Categories</h5>
+    <ul>
+      <% event.categories.forEach(category => { %>
+        <li><%= category %></li>
+      <% }) %>
+    </ul>
+  </div>
+
+  <!-- Event Speakers/Performers/Participants/Leaders/Authors -->
+  <div class="mb-4">
+    <h5>Featured Individuals</h5>
+    <ul>
+      <% if (event.speakers) { %>
+        <% event.speakers.forEach(speaker => { %>
+          <li><strong><%= speaker.name %></strong> - <%= speaker.topic %></li>
+        <% }) %>
+      <% } else if (event.performers) { %>
+        <% event.performers.forEach(performer => { %>
+          <li><strong><%= performer.name %></strong> - <%= performer.genre %></li>
+        <% }) %>
+      <% } else if (event.participants) { %>
+        <% event.participants.forEach(participant => { %>
+          <li><strong><%= participant.name %></strong> - <%= participant.sector %></li>
+        <% }) %>
+      <% } else if (event.leaders) { %>
+        <% event.leaders.forEach(leader => { %>
+          <li><strong><%= leader.name %></strong> - <%= leader.style %></li>
+        <% }) %>
+      <% } else if (event.authors) { %>
+        <% event.authors.forEach(author => { %>
+          <li><strong><%= author.name %></strong> - <%= author.genre %></li>
+        <% }) %>
+      <% } %>
+    </ul>
+  </div>
+
+  <!-- Event Sponsors -->
+  <div class="mb-4">
+    <h5>Sponsors</h5>
+    <ul>
+      <% event.sponsors.forEach(sponsor => { %>
+        <li><%= sponsor %></li>
+      <% }) %>
+    </ul>
+  </div>
+
+  <!-- Event Schedule -->
+  <div class="mb-4">
+    <h5>Schedule</h5>
+    <ul>
+      <% event.schedule.forEach(item => { %>
+        <li><strong><%= item.time %>:</strong> <%= item.activity %></li>
+      <% }) %>
+    </ul>
+  </div>
+
 </main>
 
 <%- include('partials/footer') %>
