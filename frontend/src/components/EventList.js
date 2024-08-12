@@ -13,6 +13,10 @@ const EventList = () => {
     loadEvents();
   }, []);
 
+  if (events.length === 0) {
+    return <p>No events found.</p>;
+  }
+
   return (
     <div>
       {events.map((event) => (
