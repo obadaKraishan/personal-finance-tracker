@@ -2,7 +2,20 @@
 
 <main class="container mt-5">
   <h2>Welcome to the Event Management Platform</h2>
-  <a href="/events" class="btn btn-primary mt-3">View Events</a>
+
+  <div class="mt-4">
+    <h3>Upcoming Events</h3>
+    <ul class="list-group">
+      <% events.forEach(event => { %>
+        <li class="list-group-item">
+          <h5><%= event.name %></h5>
+          <p><%= event.description %></p>
+          <p><strong>Date:</strong> <%= event.date %></p>
+          <a href="/events/<%= event.id %>" class="btn btn-primary">View Details</a>
+        </li>
+      <% }) %>
+    </ul>
+  </div>
 </main>
 
 <%- include('partials/footer') %>

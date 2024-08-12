@@ -1,4 +1,5 @@
-const Event = require('../models/Event');
+const loadEvents = require('../utils/loadEvents'); // Import the function to load events from JSON
+const Event = require('../models/Event'); // For creating new events in MongoDB
 
 exports.createEvent = async (req, res) => {
   const { name, description, date } = req.body;
@@ -14,10 +15,10 @@ exports.createEvent = async (req, res) => {
 
 exports.getEvents = async (req, res) => {
   try {
-    const events = await Event.find().populate('organizer', ['name']);
+    const events = loadEvents(); // Load events from the JSON file
     res.json(events);
   } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server error');
+    console.error('Failed to load events:', err);
+    res.status(500).json({ message: 'Failed to load events' });
   }
 };

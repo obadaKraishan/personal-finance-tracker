@@ -1,7 +1,7 @@
-// server.js
 const express = require('express');
 const path = require('path');
 const connectDB = require('./config/db');
+const loadEvents = require('./utils/loadEvents'); // Import the loadEvents function
 const app = express();
 
 // Connect to the Database
@@ -19,13 +19,18 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Home Route
 app.get('/', (req, res) => {
-  res.render('landing', { title: 'Welcome to the Event Management Platform', user: req.user });
+  const events = loadEvents(); // Load events from the JSON file
+  res.render('landing', { title: 'Welcome to the Event Management Platform', user: req.user, events });
 });
 
 // Event Details Route
-app.get('/events', (req, res) => {
-  // Assuming you have a way to get the user (e.g., from a session or JWT)
-  res.render('eventDetails', { title: 'Event Details', user: req.user });
+app.get('/events/:id', (req, res) => {
+  const events = loadEvents();
+  const event = events.find(e => e.id === req.params.id); // Find the event by ID
+  if (!event) {
+    return res.status(404).send('Event not found');
+  }
+  res.render('eventDetails', { title: 'Event Details', event, user: req.user });
 });
 
 // API Routes
