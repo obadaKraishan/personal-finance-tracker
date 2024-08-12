@@ -95,44 +95,49 @@
 <%- include('partials/footer') %>
 <script>
   document.getElementById('addEventForm').addEventListener('submit', async function(event) {
-    event.preventDefault();
-    
-    const formData = new FormData(event.target);
-    const formProps = Object.fromEntries(formData);
-    
-    formProps.categories = formProps.categories.split(',').map(cat => cat.trim());
-    formProps.speakers = formProps.speakers.split(',').map(sp => {
-      const [name, topic] = sp.split(':');
-      return { name: name.trim(), topic: topic.trim() };
-    });
-    formProps.sponsors = formProps.sponsors.split(',').map(sp => sp.trim());
-    formProps.schedule = formProps.schedule.split(',').map(sch => {
-      const [time, activity] = sch.split(':');
-      return { time: time.trim(), activity: activity.trim() };
-    });
-    
-    formProps.location = {
-      venue: formProps.venue,
-      city: formProps.city,
-      state: formProps.state,
-      country: formProps.country,
-    };
-    
-    delete formProps.venue;
-    delete formProps.city;
-    delete formProps.state;
-    delete formProps.country;
-    
-    const response = await fetch('/api/events/create', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(formProps)
-    });
-    
-    if (response.ok) {
-      location.reload(); // Refresh the page to show the new event
-    } else {
-      alert('Failed to save the event');
-    }
+  event.preventDefault();
+  
+  const formData = new FormData(event.target);
+  const formProps = Object.fromEntries(formData);
+  
+  formProps.categories = formProps.categories.split(',').map(cat => cat.trim());
+  formProps.speakers = formProps.speakers.split(',').map(sp => {
+    const [name, topic] = sp.split(':');
+    return { name: name.trim(), topic: topic.trim() };
   });
+  formProps.sponsors = formProps.sponsors.split(',').map(sp => sp.trim());
+  formProps.schedule = formProps.schedule.split(',').map(sch => {
+    const [time, activity] = sch.split(':');
+    return { time: time.trim(), activity: activity.trim() };
+  });
+  
+  formProps.location = {
+    venue: formProps.venue,
+    city: formProps.city,
+    state: formProps.state,
+    country: formProps.country,
+  };
+  
+  delete formProps.venue;
+  delete formProps.city;
+  delete formProps.state;
+  delete formProps.country;
+
+  const token = localStorage.getItem('token'); // Retrieve the token from localStorage or wherever it's stored
+
+  const response = await fetch('/api/events/create', {
+    method: 'POST',
+    headers: { 
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}` // Include the token in the Authorization header
+    },
+    body: JSON.stringify(formProps)
+  });
+  
+  if (response.ok) {
+    location.reload(); // Refresh the page to show the new event
+  } else {
+    alert('Failed to save the event');
+  }
+});
 </script>
