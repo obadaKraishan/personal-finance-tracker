@@ -5,11 +5,7 @@ export const fetchEvents = async () => {
   return response.data;
 };
 
-export const createEvent = async (eventData, token) => {
-  const response = await api.post('/events/create', eventData, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+export const fetchEventById = async (id) => {
+  const response = await api.get(`/events/${id}`);
   return response.data;
 };

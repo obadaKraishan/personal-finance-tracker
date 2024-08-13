@@ -5,6 +5,7 @@ import { AuthProvider, AuthContext } from './context/AuthContext';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import EventDetails from './pages/EventDetails'; // Import EventDetails
 import Navbar from './components/Navbar';
 
 function App() {
@@ -26,6 +27,7 @@ function AuthRoutes() {
       <Route path="/" element={user ? <Home /> : <Navigate to="/login" />} />
       <Route path="/login" element={!user ? <Login /> : <Navigate to="/" />} />
       <Route path="/register" element={!user ? <Register /> : <Navigate to="/" />} />
+      <Route path="/events/:id" element={user ? <EventDetails /> : <Navigate to="/login" />} /> {/* Event Details Route */}
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>
   );
