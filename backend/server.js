@@ -1,7 +1,8 @@
+// server.js
 const express = require('express');
 const path = require('path');
 const connectDB = require('./config/db');
-const loadEvents = require('./utils/loadEvents'); // Import the loadEvents function
+const loadEvents = require('./utils/loadEvents');
 const app = express();
 
 // Connect to the Database
@@ -26,7 +27,7 @@ app.get('/', (req, res) => {
 // Event Details Route
 app.get('/events/:id', (req, res) => {
   const events = loadEvents();
-  const event = events.find(e => e.id === req.params.id); // Find the event by ID
+  const event = events.find(e => e.id === req.params.id);
   if (!event) {
     return res.status(404).send('Event not found');
   }
@@ -36,6 +37,11 @@ app.get('/events/:id', (req, res) => {
 // API Routes
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/events', require('./routes/eventRoutes'));
+
+// Serve frontend
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'));
+});
 
 // Start the server
 const PORT = process.env.PORT || 5001;

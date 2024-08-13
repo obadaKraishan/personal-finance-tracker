@@ -1,3 +1,4 @@
+// src/App.js
 import React, { useContext } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { AuthProvider, AuthContext } from './context/AuthContext';
@@ -7,22 +8,26 @@ import Register from './pages/Register';
 import Navbar from './components/Navbar';
 
 function App() {
-  const { user } = useContext(AuthContext);
-
   return (
     <AuthProvider>
       <Router>
         <Navbar />
-        <Routes>
-          <Route
-            path="/"
-            element={user ? <Home /> : <Navigate to="/login" />}
-          />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-        </Routes>
+        <AuthRoutes />
       </Router>
     </AuthProvider>
+  );
+}
+
+function AuthRoutes() {
+  const { user } = useContext(AuthContext);
+
+  return (
+    <Routes>
+      <Route path="/" element={user ? <Home /> : <Navigate to="/login" />} />
+      <Route path="/login" element={!user ? <Login /> : <Navigate to="/" />} />
+      <Route path="/register" element={!user ? <Register /> : <Navigate to="/" />} />
+      <Route path="*" element={<Navigate to="/" />} />
+    </Routes>
   );
 }
 

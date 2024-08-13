@@ -1,3 +1,4 @@
+// src/context/AuthContext.js
 import React, { createContext, useState, useEffect } from 'react';
 import { login, register } from '../services/authService';
 
@@ -9,10 +10,7 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     if (token) {
-      const fetchUser = async () => {
-        // Fetch user data if needed based on the token
-      };
-      fetchUser();
+      // Fetch or validate user data based on the token if needed
     }
   }, [token]);
 
