@@ -29,7 +29,7 @@
   <div class="mb-4">
     <h5>Categories</h5>
     <ul>
-      <% event.categories.forEach(category => { %>
+      <% event.categories && event.categories.forEach(category => { %>
         <li><%= category %></li>
       <% }) %>
     </ul>
@@ -59,6 +59,8 @@
         <% event.authors.forEach(author => { %>
           <li><strong><%= author.name %></strong> - <%= author.genre %></li>
         <% }) %>
+      <% } else { %>
+        <li>No featured individuals listed</li>
       <% } %>
     </ul>
   </div>
@@ -67,9 +69,13 @@
   <div class="mb-4">
     <h5>Sponsors</h5>
     <ul>
-      <% event.sponsors.forEach(sponsor => { %>
-        <li><%= sponsor %></li>
-      <% }) %>
+      <% if (event.sponsors) { %>
+        <% event.sponsors.forEach(sponsor => { %>
+          <li><%= sponsor %></li>
+        <% }) %>
+      <% } else { %>
+        <li>No sponsors listed</li>
+      <% } %>
     </ul>
   </div>
 
@@ -77,9 +83,13 @@
   <div class="mb-4">
     <h5>Schedule</h5>
     <ul>
-      <% event.schedule.forEach(item => { %>
-        <li><strong><%= item.time %>:</strong> <%= item.activity %></li>
-      <% }) %>
+      <% if (event.schedule) { %>
+        <% event.schedule.forEach(item => { %>
+          <li><strong><%= item.time %>:</strong> <%= item.activity %></li>
+        <% }) %>
+      <% } else { %>
+        <li>No schedule listed</li>
+      <% } %>
     </ul>
   </div>
 
@@ -101,7 +111,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form id="editEventForm" method="POST" action="/api/events/<%= event.id %>?_method=PUT">
+        <form id="editEventForm">
           <!-- Form fields similar to the add event form -->
           <input type="text" class="form-control" name="name" value="<%= event.name %>" required>
           <textarea class="form-control mt-3" name="description" required><%= event.description %></textarea>
@@ -111,15 +121,64 @@
           <input type="text" class="form-control mt-3" name="city" value="<%= event.location.city %>" required>
           <input type="text" class="form-control mt-3" name="state" value="<%= event.location.state %>" required>
           <input type="text" class="form-control mt-3" name="country" value="<%= event.location.country %>" required>
-          <input type="text" class="form-control mt-3" name="categories" value="<%= event.categories.join(', ') %>" required>
-          <input type="text" class="form-control mt-3" name="speakers" value="<%= event.speakers.map(sp => sp.name + ':' + sp.topic).join(', ') %>" required>
-          <input type="text" class="form-control mt-3" name="sponsors" value="<%= event.sponsors.join(', ') %>" required>
-          <input type="text" class="form-control mt-3" name="schedule" value="<%= event.schedule.map(sch => sch.time + ':' + sch.activity).join(', ') %>" required>
+          <input type="text" class="form-control mt-3" name="categories" value="<%= event.categories ? event.categories.join(', ') : '' %>" required>
+          <input type="text" class="form-control mt-3" name="speakers" value="<%= event.speakers ? event.speakers.map(sp => sp.name + ':' + sp.topic).join(', ') : '' %>" required>
+          <input type="text" class="form-control mt-3" name="sponsors" value="<%= event.sponsors ? event.sponsors.join(', ') : '' %>" required>
+          <input type="text" class="form-control mt-3" name="schedule" value="<%= event.schedule ? event.schedule.map(sch => sch.time + ':' + sch.activity).join(', ') : '' %>" required>
           <button type="submit" class="btn btn-primary mt-3">Save Changes</button>
         </form>
       </div>
     </div>
   </div>
 </div>
+
+<script>
+ document.getElementById('editEventForm').addEventListener('submit', async function(event) {
+    event.preventDefault();
+
+    const formData = new FormData(event.target);
+    const formProps = Object.fromEntries(formData);
+
+    // Safeguard against undefined or empty fields
+    const formattedEvent = {
+        ...formProps,
+        categories: formProps.categories ? formProps.categories.split(',').map(cat => cat.trim()) : [],
+        speakers: formProps.speakers ? formProps.speakers.split(',').map(sp => {
+            const [name, topic] = sp.split(':');
+            return { name: name?.trim() || '', topic: topic?.trim() || '' };
+        }) : [],
+        sponsors: formProps.sponsors ? formProps.sponsors.split(',').map(sp => sp.trim()) : [],
+        schedule: formProps.schedule ? formProps.schedule.split(',').map(sch => {
+            const [time, activity] = sch.split(':');
+            return { time: time?.trim() || '', activity: activity?.trim() || '' };
+        }) : [],
+        location: {
+            venue: formProps.venue?.trim() || '',
+            city: formProps.city?.trim() || '',
+            state: formProps.state?.trim() || '',
+            country: formProps.country?.trim() || '',
+        }
+    };
+
+    try {
+        const response = await fetch(`/api/events/<%= event.id %>`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}` // Ensure the token is sent
+            },
+            body: JSON.stringify(formattedEvent)
+        });
+
+        if (response.ok) {
+            location.reload(); // Reload the page to reflect the changes
+        } else {
+            alert('Failed to update the event');
+        }
+    } catch (error) {
+        console.error('Failed to update the event:', error);
+    }
+});
+</script>
 
 <%- include('partials/footer') %>

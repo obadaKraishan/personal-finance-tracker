@@ -1,4 +1,4 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 import { login, register } from '../services/authService';
 
 export const AuthContext = createContext();
@@ -6,6 +6,15 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(localStorage.getItem('token'));
+
+  useEffect(() => {
+    if (token) {
+      const fetchUser = async () => {
+        // Fetch user data if needed based on the token
+      };
+      fetchUser();
+    }
+  }, [token]);
 
   const handleLogin = async (userData) => {
     const data = await login(userData);
