@@ -1,4 +1,5 @@
 // server.js
+const cors = require('cors');
 const express = require('express');
 const path = require('path');
 const connectDB = require('./config/db');
@@ -7,6 +8,9 @@ const app = express();
 
 // Connect to the Database
 connectDB();
+
+// Enable CORS
+app.use(cors());
 
 // Set up Middleware
 app.use(express.json()); // Parse JSON bodies
