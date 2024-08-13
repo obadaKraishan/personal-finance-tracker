@@ -29,3 +29,42 @@ exports.getEvents = (req, res) => {
     res.status(500).json({ message: 'Failed to load events' });
   }
 };
+
+// New function to update an event
+exports.updateEvent = (req, res) => {
+  const events = loadEvents();
+  const eventIndex = events.findIndex(e => e.id === req.params.id);
+
+  if (eventIndex === -1) {
+    return res.status(404).json({ message: 'Event not found' });
+  }
+
+  const updatedEvent = { ...events[eventIndex], ...req.body };
+  events[eventIndex] = updatedEvent;
+
+  try {
+    fs.writeFileSync(path.join(__dirname, '../data/events.json'), JSON.stringify(events, null, 2));
+    res.status(200).json(updatedEvent);
+  } catch (err) {
+    console.error('Failed to update event:', err);
+    res.status(500).json({ message: 'Failed to update event' });
+  }
+};
+
+// New function to delete an event
+exports.deleteEvent = (req, res) => {
+  const events = loadEvents();
+  const updatedEvents = events.filter(e => e.id !== req.params.id);
+
+  if (events.length === updatedEvents.length) {
+    return res.status(404).json({ message: 'Event not found' });
+  }
+
+  try {
+    fs.writeFileSync(path.join(__dirname, '../data/events.json'), JSON.stringify(updatedEvents, null, 2));
+    res.status(200).json({ message: 'Event deleted' });
+  } catch (err) {
+    console.error('Failed to delete event:', err);
+    res.status(500).json({ message: 'Failed to delete event' });
+  }
+};
