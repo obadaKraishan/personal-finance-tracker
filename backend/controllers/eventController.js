@@ -38,3 +38,11 @@ exports.deleteEventById = (req, res) => {
   saveEvents(events);
   res.status(204).send(); // No Content response
 };
+
+exports.addNewEvent = (req, res) => {
+  const events = loadEvents();
+  const newEvent = { id: Date.now().toString(), ...req.body }; // Create a new event with a unique ID
+  events.push(newEvent);
+  saveEvents(events);
+  res.status(201).json(newEvent); // Return the new event with a 201 Created status
+};

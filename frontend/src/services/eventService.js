@@ -1,3 +1,4 @@
+// src/services/eventService.js
 import api from './api';
 
 export const fetchEvents = async () => {
@@ -35,6 +36,17 @@ export const deleteEvent = async (id) => {
     await api.delete(`/events/${id}`);
   } catch (error) {
     console.error('Failed to delete event:', error);
+    throw error;
+  }
+};
+
+// Add the saveEvent function
+export const saveEvent = async (newEvent) => {
+  try {
+    const response = await api.post('/events', newEvent);
+    return response.data;
+  } catch (error) {
+    console.error('Failed to save event:', error);
     throw error;
   }
 };

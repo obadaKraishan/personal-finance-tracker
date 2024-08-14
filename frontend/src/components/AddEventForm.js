@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { TextField, Button, Box } from '@mui/material';
 import { saveEvent } from '../services/eventService';
 
-const AddEventForm = ({ onClose }) => {
+const AddEventForm = ({ onClose, onEventAdded }) => {
   const [eventData, setEventData] = useState({
     name: '',
     description: '',
@@ -27,16 +27,16 @@ const AddEventForm = ({ onClose }) => {
     const formattedEvent = {
       ...eventData,
       id: Date.now().toString(), // Unique ID
-      categories: eventData.categories.split(',').map(cat => cat.trim()),
-      speakers: eventData.speakers.split(',').map(sp => {
+      categories: eventData.categories ? eventData.categories.split(',').map(cat => cat.trim()) : [],
+      speakers: eventData.speakers ? eventData.speakers.split(',').map(sp => {
         const [name, topic] = sp.split(':');
-        return { name: name.trim(), topic: topic.trim() };
-      }),
-      sponsors: eventData.sponsors.split(',').map(sp => sp.trim()),
-      schedule: eventData.schedule.split(',').map(sch => {
+        return { name: name?.trim() || '', topic: topic?.trim() || '' };
+      }) : [],
+      sponsors: eventData.sponsors ? eventData.sponsors.split(',').map(sp => sp.trim()) : [],
+      schedule: eventData.schedule ? eventData.schedule.split(',').map(sch => {
         const [time, activity] = sch.split(':');
-        return { time: time.trim(), activity: activity.trim() };
-      }),
+        return { time: time?.trim() || '', activity: activity?.trim() || '' };
+      }) : [],
       location: {
         venue: eventData.venue,
         city: eventData.city,
@@ -44,9 +44,9 @@ const AddEventForm = ({ onClose }) => {
         country: eventData.country,
       }
     };
-
+  
     await saveEvent(formattedEvent);
-    onClose();
+    onEventAdded(formattedEvent);  
   };
 
   return (
