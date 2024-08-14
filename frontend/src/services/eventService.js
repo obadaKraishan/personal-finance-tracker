@@ -19,3 +19,22 @@ export const fetchEventById = async (id) => {
     throw error;
   }
 };
+
+export const updateEvent = async (id, eventData) => {
+  try {
+    const response = await api.put(`/events/${id}`, eventData);
+    return response.data;
+  } catch (error) {
+    console.error('Failed to update event:', error);
+    throw error;
+  }
+};
+
+export const deleteEvent = async (id) => {
+  try {
+    await api.delete(`/events/${id}`);
+  } catch (error) {
+    console.error('Failed to delete event:', error);
+    throw error;
+  }
+};

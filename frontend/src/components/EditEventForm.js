@@ -11,29 +11,39 @@ const EditEventForm = ({ event, onClose }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     const formattedEvent = {
-      ...eventData,
-      categories: eventData.categories.split(',').map(cat => cat.trim()),
-      speakers: eventData.speakers.split(',').map(sp => {
-        const [name, topic] = sp.split(':');
-        return { name: name.trim(), topic: topic.trim() };
-      }),
-      sponsors: eventData.sponsors.split(',').map(sp => sp.trim()),
-      schedule: eventData.schedule.split(',').map(sch => {
-        const [time, activity] = sch.split(':');
-        return { time: time.trim(), activity: activity.trim() };
-      }),
-      location: {
-        venue: eventData.venue,
-        city: eventData.city,
-        state: eventData.state,
-        country: eventData.country,
-      }
+        ...eventData,
+        categories: Array.isArray(eventData.categories)
+            ? eventData.categories
+            : eventData.categories.split(',').map(cat => cat.trim()),
+        speakers: Array.isArray(eventData.speakers)
+            ? eventData.speakers
+            : eventData.speakers.split(',').map(sp => {
+                const [name, topic] = sp.split(':');
+                return { name: name.trim(), topic: topic.trim() };
+            }),
+        sponsors: Array.isArray(eventData.sponsors)
+            ? eventData.sponsors
+            : eventData.sponsors.split(',').map(sp => sp.trim()),
+        schedule: Array.isArray(eventData.schedule)
+            ? eventData.schedule
+            : eventData.schedule.split(',').map(sch => {
+                const [time, activity] = sch.split(':');
+                return { time: time.trim(), activity: activity.trim() };
+            }),
+        location: {
+            venue: eventData.venue,
+            city: eventData.city,
+            state: eventData.state,
+            country: eventData.country,
+        },
     };
 
     await updateEvent(eventData.id, formattedEvent);
     onClose();
-  };
+};
+
 
   return (
     <Box component="form" onSubmit={handleSubmit}>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { fetchEventById } from '../services/eventService';
+import { useParams, useNavigate } from 'react-router-dom';
+import { fetchEventById, deleteEvent } from '../services/eventService';
 import {
   Card,
   CardContent,
@@ -9,11 +9,18 @@ import {
   Button,
   Divider,
   Box,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from '@mui/material';
+import EditEventForm from '../components/EditEventForm';
 
 const EventDetails = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [event, setEvent] = useState(null);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
 
   useEffect(() => {
     const loadEvent = async () => {
@@ -26,6 +33,23 @@ const EventDetails = () => {
     };
     loadEvent();
   }, [id]);
+
+  const handleEditClick = () => {
+    setIsEditDialogOpen(true);
+  };
+
+  const handleDeleteClick = async () => {
+    try {
+      await deleteEvent(id);
+      navigate('/'); // Redirect to home after deletion
+    } catch (error) {
+      console.error('Error deleting event:', error);
+    }
+  };
+
+  const handleCloseEditDialog = () => {
+    setIsEditDialogOpen(false);
+  };
 
   if (!event) {
     return <p>Loading event details...</p>;
@@ -92,14 +116,26 @@ const EventDetails = () => {
         </ul>
 
         <Box sx={{ marginTop: 4, display: 'flex', justifyContent: 'space-between' }}>
-          <Button variant="contained" color="primary">
+          <Button variant="contained" color="primary" onClick={handleEditClick}>
             Edit Event
           </Button>
-          <Button variant="outlined" color="secondary">
+          <Button variant="outlined" color="secondary" onClick={handleDeleteClick}>
             Delete Event
           </Button>
         </Box>
       </CardContent>
+
+      <Dialog open={isEditDialogOpen} onClose={handleCloseEditDialog} fullWidth maxWidth="sm">
+        <DialogTitle>Edit Event</DialogTitle>
+        <DialogContent>
+          <EditEventForm event={event} onClose={handleCloseEditDialog} />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseEditDialog} color="secondary">
+            Cancel
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Card>
   );
 };
