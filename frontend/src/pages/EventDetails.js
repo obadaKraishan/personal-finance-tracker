@@ -77,7 +77,7 @@ const EventDetails = () => {
 
         <Typography variant="h6">Location:</Typography>
         <Typography variant="body2">
-          {event.location.venue}, {event.location.city}, {event.location.state}, {event.location.country}
+          {event.location?.venue}, {event.location?.city}, {event.location?.state}, {event.location?.country}
         </Typography>
 
         <Typography variant="h6" sx={{ marginTop: 2 }}>Date:</Typography>
@@ -89,12 +89,12 @@ const EventDetails = () => {
 
         <Typography variant="h6">Categories:</Typography>
         <Typography variant="body2">
-          {event.categories.join(', ')}
+          {event.categories?.join(', ')}
         </Typography>
 
         <Typography variant="h6" sx={{ marginTop: 2 }}>Speakers:</Typography>
         <ul>
-          {event.speakers.map((speaker, index) => (
+          {event.speakers?.map((speaker, index) => (
             <li key={index}>
               <Typography variant="body2">
                 {speaker.name} - {speaker.topic}
@@ -105,12 +105,12 @@ const EventDetails = () => {
 
         <Typography variant="h6" sx={{ marginTop: 2 }}>Sponsors:</Typography>
         <Typography variant="body2">
-          {event.sponsors.join(', ')}
+          {event.sponsors?.join(', ')}
         </Typography>
 
         <Typography variant="h6" sx={{ marginTop: 2 }}>Schedule:</Typography>
         <ul>
-          {event.schedule.map((item, index) => (
+          {event.schedule?.map((item, index) => (
             <li key={index}>
               <Typography variant="body2">
                 {item.time} - {item.activity}
