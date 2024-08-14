@@ -1,3 +1,4 @@
+// src/components/EventList.js
 import React, { useEffect, useState } from 'react';
 import { fetchEvents } from '../services/eventService';
 import { Card, CardContent, Typography, Button } from '@mui/material';
@@ -30,14 +31,14 @@ const EventList = () => {
   return (
     <div>
       {events.map((event) => (
-        <Card key={event._id} style={{ marginBottom: '20px' }}>
+        <Card key={event.id} style={{ marginBottom: '20px' }}> {/* Use event.id or event._id depending on your JSON structure */}
           <CardContent>
             <Typography variant="h5">{event.name}</Typography>
             <Typography variant="body2">{event.description}</Typography>
             <Typography variant="body2">Date: {new Date(event.date).toDateString()}</Typography>
             <Button
               component={Link}
-              to={`/events/${event._id}`}
+              to={`/events/${event.id}`}  
               variant="contained"
               color="primary"
               style={{ marginTop: '10px' }}

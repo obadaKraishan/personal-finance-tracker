@@ -1,3 +1,4 @@
+// frontend/src/services/eventService.js
 import api from './api';
 
 export const fetchEvents = async () => {
