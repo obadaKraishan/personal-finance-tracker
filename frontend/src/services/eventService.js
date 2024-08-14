@@ -20,9 +20,9 @@ export const fetchEventById = async (id) => {
   }
 };
 
-export const updateEvent = async (id, eventData) => {
+export const updateEvent = async (id, updatedEvent) => {
   try {
-    const response = await api.put(`/events/${id}`, eventData);
+    const response = await api.put(`/events/${id}`, updatedEvent);
     return response.data;
   } catch (error) {
     console.error('Failed to update event:', error);

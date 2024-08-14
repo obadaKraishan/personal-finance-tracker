@@ -1,3 +1,4 @@
+// src/pages/EventDetails.js
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { fetchEventById, deleteEvent } from '../services/eventService';
@@ -90,7 +91,7 @@ const EventDetails = () => {
 
         <Typography variant="h6" sx={{ marginTop: 2 }}>Speakers:</Typography>
         <ul>
-          {event.speakers.map((speaker, index) => (
+          {event.speakers?.map((speaker, index) => (
             <li key={index}>
               <Typography variant="body2">
                 {speaker.name} - {speaker.topic}
@@ -101,12 +102,12 @@ const EventDetails = () => {
 
         <Typography variant="h6" sx={{ marginTop: 2 }}>Sponsors:</Typography>
         <Typography variant="body2">
-          {event.sponsors.join(', ')}
+          {event.sponsors?.join(', ')}
         </Typography>
 
         <Typography variant="h6" sx={{ marginTop: 2 }}>Schedule:</Typography>
         <ul>
-          {event.schedule.map((item, index) => (
+          {event.schedule?.map((item, index) => (
             <li key={index}>
               <Typography variant="body2">
                 {item.time} - {item.activity}

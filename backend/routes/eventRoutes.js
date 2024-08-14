@@ -1,4 +1,3 @@
-// backend/routes/eventRoutes.js
 const express = require('express');
 const { getAllEvents, getEventById, updateEventById } = require('../controllers/eventController');
 const router = express.Router();

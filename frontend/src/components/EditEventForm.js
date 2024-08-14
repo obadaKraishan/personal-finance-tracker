@@ -1,9 +1,26 @@
+// src/components/EditEventForm.js
 import React, { useState, useEffect } from 'react';
 import { TextField, Button, Box } from '@mui/material';
 import { updateEvent } from '../services/eventService';
 
 const EditEventForm = ({ event, onClose }) => {
-  const [eventData, setEventData] = useState(event);
+  const [eventData, setEventData] = useState({
+    ...event,
+    categories: event.categories || [],
+    speakers: event.speakers || [],
+    sponsors: event.sponsors || [],
+    schedule: event.schedule || [],
+  });
+
+  useEffect(() => {
+    setEventData({
+      ...event,
+      categories: event.categories || [],
+      speakers: event.speakers || [],
+      sponsors: event.sponsors || [],
+      schedule: event.schedule || [],
+    }); 
+  }, [event]);
 
   const handleChange = (e) => {
     setEventData({ ...eventData, [e.target.name]: e.target.value });
@@ -12,38 +29,41 @@ const EditEventForm = ({ event, onClose }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const formattedEvent = {
+    try {
+      const formattedEvent = {
         ...eventData,
         categories: Array.isArray(eventData.categories)
-            ? eventData.categories
-            : eventData.categories.split(',').map(cat => cat.trim()),
+          ? eventData.categories
+          : eventData.categories.split(',').map(cat => cat.trim()),
         speakers: Array.isArray(eventData.speakers)
-            ? eventData.speakers
-            : eventData.speakers.split(',').map(sp => {
-                const [name, topic] = sp.split(':');
-                return { name: name.trim(), topic: topic.trim() };
-            }),
+          ? eventData.speakers
+          : eventData.speakers.split(',').map(sp => {
+              const [name, topic] = sp.split(':');
+              return { name: name.trim(), topic: topic.trim() };
+          }),
         sponsors: Array.isArray(eventData.sponsors)
-            ? eventData.sponsors
-            : eventData.sponsors.split(',').map(sp => sp.trim()),
+          ? eventData.sponsors
+          : eventData.sponsors.split(',').map(sp => sp.trim()),
         schedule: Array.isArray(eventData.schedule)
-            ? eventData.schedule
-            : eventData.schedule.split(',').map(sch => {
-                const [time, activity] = sch.split(':');
-                return { time: time.trim(), activity: activity.trim() };
-            }),
+          ? eventData.schedule
+          : eventData.schedule.split(',').map(sch => {
+              const [time, activity] = sch.split(':');
+              return { time: time.trim(), activity: activity.trim() };
+          }),
         location: {
-            venue: eventData.venue,
-            city: eventData.city,
-            state: eventData.state,
-            country: eventData.country,
+          venue: eventData.venue,
+          city: eventData.city,
+          state: eventData.state,
+          country: eventData.country,
         },
-    };
+      };
 
-    await updateEvent(eventData.id, formattedEvent);
-    onClose();
-};
-
+      await updateEvent(eventData.id, formattedEvent);
+      onClose();
+    } catch (error) {
+      console.error('Error submitting form:', error);
+    }
+  };
 
   return (
     <Box component="form" onSubmit={handleSubmit}>

@@ -1,3 +1,4 @@
+// backend/controllers/eventController.js
 const loadEvents = require('../utils/loadEvents');
 const saveEvents = require('../utils/saveEvents');
 
@@ -24,11 +25,10 @@ exports.updateEventById = (req, res) => {
   }
   
   events[eventIndex] = { ...events[eventIndex], ...req.body };
-  // Save the updated events back to the storage (file/database/etc.)
+  saveEvents(events); // Save the updated events back to the storage (file/database/etc.)
   
   res.json(events[eventIndex]);
 };
-
 
 exports.deleteEventById = (req, res) => {
   let events = loadEvents();
