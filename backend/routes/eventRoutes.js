@@ -1,11 +1,8 @@
 const express = require('express');
-const { createEvent, getEvents, updateEvent, deleteEvent } = require('../controllers/eventController');
-const authMiddleware = require('../middleware/authMiddleware');
+const { getAllEvents, getEventById } = require('../controllers/eventController');
 const router = express.Router();
 
-router.post('/create', authMiddleware, createEvent); // Route for creating events
-router.get('/', getEvents); // Route for fetching events
-router.put('/:id', authMiddleware, updateEvent); // Route for updating events
-router.delete('/:id', authMiddleware, deleteEvent); // Route for deleting events
+router.get('/', getAllEvents); // Route to get all events
+router.get('/:id', getEventById); // Route to get event by ID
 
 module.exports = router;

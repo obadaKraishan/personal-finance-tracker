@@ -5,14 +5,23 @@ import { Link } from 'react-router-dom';
 
 const EventList = () => {
   const [events, setEvents] = useState([]);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const loadEvents = async () => {
-      const data = await fetchEvents();
-      setEvents(data);
+      try {
+        const data = await fetchEvents();
+        setEvents(data);
+      } catch (err) {
+        setError('Failed to load events');
+      }
     };
     loadEvents();
   }, []);
+
+  if (error) {
+    return <p>{error}</p>;
+  }
 
   if (events.length === 0) {
     return <p>No events found.</p>;

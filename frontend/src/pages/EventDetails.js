@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { fetchEventById } from '../services/eventService';
-import { Typography, Card, CardContent } from '@mui/material';
+import { Typography } from '@mui/material';
 
 const EventDetails = () => {
   const { id } = useParams();
@@ -9,8 +9,12 @@ const EventDetails = () => {
 
   useEffect(() => {
     const loadEvent = async () => {
-      const data = await fetchEventById(id);
-      setEvent(data);
+      try {
+        const data = await fetchEventById(id);
+        setEvent(data);
+      } catch (error) {
+        console.error('Error loading event:', error);
+      }
     };
     loadEvent();
   }, [id]);
@@ -20,20 +24,11 @@ const EventDetails = () => {
   }
 
   return (
-    <Card style={{ marginTop: '20px' }}>
-      <CardContent>
-        <Typography variant="h4">{event.name}</Typography>
-        <Typography variant="body1" style={{ marginTop: '20px' }}>
-          {event.description}
-        </Typography>
-        <Typography variant="body2" style={{ marginTop: '20px' }}>
-          Date: {new Date(event.date).toDateString()}
-        </Typography>
-        <Typography variant="body2" style={{ marginTop: '10px' }}>
-          Organizer: {event.organizer.name}
-        </Typography>
-      </CardContent>
-    </Card>
+    <div>
+      <Typography variant="h4">{event.name}</Typography>
+      <Typography variant="body1">{event.description}</Typography>
+      <Typography variant="body2">Date: {new Date(event.date).toDateString()}</Typography>
+    </div>
   );
 };
 
