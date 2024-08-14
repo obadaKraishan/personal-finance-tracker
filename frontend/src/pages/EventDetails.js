@@ -1,4 +1,3 @@
-// src/pages/EventDetails.js
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { fetchEventById, deleteEvent } from '../services/eventService';
@@ -52,6 +51,10 @@ const EventDetails = () => {
     setIsEditDialogOpen(false);
   };
 
+  const handleUpdateEvent = (updatedEvent) => {
+    setEvent(updatedEvent);  // Update the event state with the updated event data
+  };
+
   if (!event) {
     return <p>Loading event details...</p>;
   }
@@ -91,7 +94,7 @@ const EventDetails = () => {
 
         <Typography variant="h6" sx={{ marginTop: 2 }}>Speakers:</Typography>
         <ul>
-          {event.speakers?.map((speaker, index) => (
+          {event.speakers.map((speaker, index) => (
             <li key={index}>
               <Typography variant="body2">
                 {speaker.name} - {speaker.topic}
@@ -102,12 +105,12 @@ const EventDetails = () => {
 
         <Typography variant="h6" sx={{ marginTop: 2 }}>Sponsors:</Typography>
         <Typography variant="body2">
-          {event.sponsors?.join(', ')}
+          {event.sponsors.join(', ')}
         </Typography>
 
         <Typography variant="h6" sx={{ marginTop: 2 }}>Schedule:</Typography>
         <ul>
-          {event.schedule?.map((item, index) => (
+          {event.schedule.map((item, index) => (
             <li key={index}>
               <Typography variant="body2">
                 {item.time} - {item.activity}
@@ -129,7 +132,7 @@ const EventDetails = () => {
       <Dialog open={isEditDialogOpen} onClose={handleCloseEditDialog} fullWidth maxWidth="sm">
         <DialogTitle>Edit Event</DialogTitle>
         <DialogContent>
-          <EditEventForm event={event} onClose={handleCloseEditDialog} />
+          <EditEventForm event={event} onClose={handleCloseEditDialog} onUpdate={handleUpdateEvent} />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseEditDialog} color="secondary">

@@ -1,9 +1,8 @@
-// src/components/EditEventForm.js
 import React, { useState, useEffect } from 'react';
 import { TextField, Button, Box } from '@mui/material';
 import { updateEvent } from '../services/eventService';
 
-const EditEventForm = ({ event, onClose }) => {
+const EditEventForm = ({ event, onClose, onUpdate }) => {  // Add onUpdate prop
   const [eventData, setEventData] = useState({
     ...event,
     categories: event.categories || [],
@@ -53,12 +52,13 @@ const EditEventForm = ({ event, onClose }) => {
     e.preventDefault();
 
     try {
-      const formattedEvent = {
+      const updatedEvent = {
         ...eventData,
       };
 
-      await updateEvent(eventData.id, formattedEvent);
-      onClose();
+      const response = await updateEvent(eventData.id, updatedEvent);
+      onUpdate(response);  // Call the onUpdate prop with the updated event data
+      onClose();  // Close the dialog
     } catch (error) {
       console.error('Error submitting form:', error);
     }
