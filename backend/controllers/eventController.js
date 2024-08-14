@@ -1,4 +1,3 @@
-// backend/controllers/eventController.js
 const loadEvents = require('../utils/loadEvents');
 const saveEvents = require('../utils/saveEvents');
 
@@ -9,7 +8,7 @@ exports.getAllEvents = (req, res) => {
 
 exports.getEventById = (req, res) => {
   const events = loadEvents();
-  const event = events.find(e => e.id === req.params.id);
+  const event = events.find(e => e.id === req.params.id); // Ensure ID is a string
   if (!event) {
     return res.status(404).json({ message: 'Event not found' });
   }
@@ -17,16 +16,19 @@ exports.getEventById = (req, res) => {
 };
 
 exports.updateEventById = (req, res) => {
+  console.log(`Updating event with ID: ${req.params.id}`); // Log the ID
   const events = loadEvents();
   const eventIndex = events.findIndex(e => e.id === req.params.id);
-  
+
   if (eventIndex === -1) {
+    console.log('Event not found');
     return res.status(404).json({ message: 'Event not found' });
   }
-  
+
   events[eventIndex] = { ...events[eventIndex], ...req.body };
-  saveEvents(events); // Save the updated events back to the storage (file/database/etc.)
+  saveEvents(events);
   
+  console.log('Event updated successfully');
   res.json(events[eventIndex]);
 };
 

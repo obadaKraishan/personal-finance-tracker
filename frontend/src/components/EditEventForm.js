@@ -19,11 +19,34 @@ const EditEventForm = ({ event, onClose }) => {
       speakers: event.speakers || [],
       sponsors: event.sponsors || [],
       schedule: event.schedule || [],
-    }); 
+    });
   }, [event]);
 
   const handleChange = (e) => {
-    setEventData({ ...eventData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    if (name === 'categories' || name === 'sponsors') {
+      setEventData({ ...eventData, [name]: value.split(',').map(item => item.trim()) });
+    } else if (name === 'speakers') {
+      setEventData({
+        ...eventData,
+        speakers: value.split(',').map(sp => {
+          const [name, topic] = sp.split(':');
+          return { name: name.trim(), topic: topic.trim() };
+        }),
+      });
+    } else if (name === 'schedule') {
+      setEventData({
+        ...eventData,
+        schedule: value.split(',').map(sch => {
+          const [time, activity] = sch.split(':');
+          return { time: time.trim(), activity: activity.trim() };
+        }),
+      });
+    } else if (name === 'venue' || name === 'city' || name === 'state' || name === 'country') {
+      setEventData({ ...eventData, location: { ...eventData.location, [name]: value } });
+    } else {
+      setEventData({ ...eventData, [name]: value });
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -32,30 +55,6 @@ const EditEventForm = ({ event, onClose }) => {
     try {
       const formattedEvent = {
         ...eventData,
-        categories: Array.isArray(eventData.categories)
-          ? eventData.categories
-          : eventData.categories.split(',').map(cat => cat.trim()),
-        speakers: Array.isArray(eventData.speakers)
-          ? eventData.speakers
-          : eventData.speakers.split(',').map(sp => {
-              const [name, topic] = sp.split(':');
-              return { name: name.trim(), topic: topic.trim() };
-          }),
-        sponsors: Array.isArray(eventData.sponsors)
-          ? eventData.sponsors
-          : eventData.sponsors.split(',').map(sp => sp.trim()),
-        schedule: Array.isArray(eventData.schedule)
-          ? eventData.schedule
-          : eventData.schedule.split(',').map(sch => {
-              const [time, activity] = sch.split(':');
-              return { time: time.trim(), activity: activity.trim() };
-          }),
-        location: {
-          venue: eventData.venue,
-          city: eventData.city,
-          state: eventData.state,
-          country: eventData.country,
-        },
       };
 
       await updateEvent(eventData.id, formattedEvent);
