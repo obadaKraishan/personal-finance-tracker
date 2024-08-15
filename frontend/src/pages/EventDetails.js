@@ -48,11 +48,12 @@ const EventDetails = () => {
     }
   };
 
+  // Add the handleRegisterClick function here
   const handleRegisterClick = async () => {
     try {
-      await registerForEvent(id); // Register for the event
+      await registerForEvent(event._id); // Ensure you're passing a valid ObjectId
       alert('Registration successful!');
-      navigate('/my-tickets'); // Redirect to the tickets page
+      navigate('/my-tickets');
     } catch (error) {
       console.error('Error registering for event:', error);
       alert('Registration failed!');

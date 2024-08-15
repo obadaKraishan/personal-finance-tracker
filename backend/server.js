@@ -1,11 +1,11 @@
 const cors = require('cors');
 const express = require('express');
 const path = require('path');
-const connectDB = require('./config/db');
+const connectDB = require('./config/db'); // Ensure this is correctly defined and connects to your DB
 const app = express();
 
 // Connect to the Database
-connectDB();
+connectDB(); // Make sure your DB connection is working as expected
 
 // Enable CORS
 app.use(cors());
@@ -16,7 +16,7 @@ app.use(express.json()); // Parse JSON bodies
 // API Routes
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/events', require('./routes/eventRoutes'));
-app.use('/api/registrations', require('./routes/registrationRoutes')); // Registration routes
+app.use('/api/registrations', require('./routes/registrationRoutes')); // Ensure this route is correct
 
 // Serve frontend
 if (process.env.NODE_ENV === 'production') {
