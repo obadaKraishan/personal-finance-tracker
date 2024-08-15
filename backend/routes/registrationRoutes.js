@@ -1,5 +1,3 @@
-// Full path: backend/routes/registrationRoutes.js
-
 const express = require('express');
 const { registerForEvent, getRegistrationsForUser } = require('../controllers/registrationController');
 const authMiddleware = require('../middleware/authMiddleware');

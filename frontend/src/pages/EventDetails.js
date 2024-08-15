@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { fetchEventById, deleteEvent } from '../services/eventService';
-import { registerForEvent } from '../services/registrationService'; // Import the registration service
+import { registerForEvent } from '../services/registrationService';
 import {
   Card,
   CardContent,
@@ -20,7 +20,7 @@ import {
 import EditEventForm from '../components/EditEventForm';
 
 const EventDetails = () => {
-  const { id } = useParams();
+  const { id } = useParams(); // The event ID from the route
   const navigate = useNavigate();
   const [event, setEvent] = useState(null);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
@@ -43,29 +43,31 @@ const EventDetails = () => {
 
   const handleDeleteClick = async () => {
     try {
-      await deleteEvent(event._id || event.id); // Use correct ID field
+      await deleteEvent(event._id || event.id);
       navigate('/'); // Redirect to home after deletion
     } catch (error) {
       console.error('Error deleting event:', error);
     }
   };
 
-  // Add the handleRegisterClick function here
-const handleRegisterClick = async () => {
-  try {
-    console.log("Event ID:", event._id || event.id); // Log event ID to ensure it's defined
-    
-    // Ensure you're passing a valid ObjectId or string ID that matches what your backend expects
-    const eventId = event._id || event.id; // MongoDB usually uses _id
-    await registerForEvent(eventId); 
-    alert('Registration successful!');
-    navigate('/my-tickets');
-  } catch (error) {
-    console.error('Error registering for event:', error.response ? error.response.data : error.message);
-    alert('Registration failed!');
-  }
-};
+  const handleRegisterClick = async () => {
+    try {
+      // Ensure the event ID is extracted correctly from the event object
+      const eventId = event._id || event.id;
+      console.log("Event ID:", eventId); // Log event ID to ensure it's defined
 
+      if (!eventId) {
+        throw new Error('Event ID is undefined');
+      }
+
+      await registerForEvent(eventId);
+      alert('Registration successful!');
+      navigate('/my-tickets');
+    } catch (error) {
+      console.error('Error registering for event:', error.response ? error.response.data : error.message);
+      alert('Registration failed!');
+    }
+  };
 
   const handleCloseEditDialog = () => {
     setIsEditDialogOpen(false);
