@@ -1,11 +1,11 @@
 const cors = require('cors');
 const express = require('express');
 const path = require('path');
-// const connectDB = require('./config/db'); // Ensure this is correctly defined and connects to your DB
+const connectDB = require('./config/db'); // Ensure this is correctly defined and connects to your DB
 const app = express();
 
 // Connect to the Database
-// connectDB(); // Make sure your DB connection is working as expected
+connectDB(); // Make sure your DB connection is working as expected
 
 // Enable CORS
 app.use(cors());
