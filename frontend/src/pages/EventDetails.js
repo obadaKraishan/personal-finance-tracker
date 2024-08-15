@@ -1,5 +1,3 @@
-// Full path: frontend/src/pages/EventDetails.js
-
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { fetchEventById, deleteEvent } from '../services/eventService';
@@ -8,7 +6,6 @@ import {
   Card,
   CardContent,
   Typography,
-  Grid,
   Button,
   Divider,
   Box,
@@ -75,6 +72,12 @@ const EventDetails = () => {
 
   const handleUpdateEvent = (updatedEvent) => {
     setEvent(updatedEvent);  // Update the event state with the updated event data
+  };
+
+  // Helper function to format the date for input fields
+  const formatDate = (date) => {
+    const d = new Date(date);
+    return d.toISOString().split('T')[0];
   };
 
   if (!event) {
