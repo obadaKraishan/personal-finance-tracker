@@ -1,4 +1,5 @@
-// src/services/eventService.js
+// Full path: src/services/eventService.js
+
 import api from './api';
 
 export const fetchEvents = async () => {
@@ -40,7 +41,6 @@ export const deleteEvent = async (id) => {
   }
 };
 
-// Add the saveEvent function
 export const saveEvent = async (newEvent) => {
   try {
     const response = await api.post('/events', newEvent);

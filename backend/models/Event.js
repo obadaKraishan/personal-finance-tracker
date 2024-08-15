@@ -3,11 +3,10 @@
 const mongoose = require('mongoose');
 
 const EventSchema = new mongoose.Schema({
-  id: { type: String, required: true, unique: true }, // Custom ID field
   name: { type: String, required: true },
   description: { type: String, required: true },
   date: { type: Date, required: true },
-  organizer: { type: String, required: true }, // Assuming organizer is a string based on your JSON data
+  organizer: { type: String, required: true },
   location: {
     venue: { type: String, required: true },
     city: { type: String, required: true },

@@ -1,4 +1,5 @@
-// src/components/EventCard.js
+// Full path: src/components/EventCard.js
+
 import React from 'react';
 import { Card, CardContent, Typography, Button } from '@mui/material';
 import { Link } from 'react-router-dom';
@@ -12,7 +13,7 @@ const EventCard = ({ event }) => {
         <Typography variant="body2">Date: {new Date(event.date).toDateString()}</Typography>
         <Button
           component={Link}
-          to={`/events/${event.id}`}  // Adjust the path if necessary
+          to={`/events/${event._id}`}  // Adjust the path to use MongoDB's _id
           variant="contained"
           color="primary"
           style={{ marginTop: '10px' }}

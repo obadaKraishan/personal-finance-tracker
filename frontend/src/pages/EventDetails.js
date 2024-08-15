@@ -1,3 +1,5 @@
+// Full path: src/pages/EventDetails.js
+
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { fetchEventById, deleteEvent } from '../services/eventService';
@@ -49,14 +51,7 @@ const EventDetails = () => {
 
   const handleRegisterClick = async () => {
     try {
-      // Ensure the event ID is extracted correctly from the event object
       const eventId = event._id || event.id;
-      console.log("Event ID:", eventId); // Log event ID to ensure it's defined
-
-      if (!eventId) {
-        throw new Error('Event ID is undefined');
-      }
-
       await registerForEvent(eventId);
       alert('Registration successful!');
       navigate('/my-tickets');
@@ -71,13 +66,7 @@ const EventDetails = () => {
   };
 
   const handleUpdateEvent = (updatedEvent) => {
-    setEvent(updatedEvent);  // Update the event state with the updated event data
-  };
-
-  // Helper function to format the date for input fields
-  const formatDate = (date) => {
-    const d = new Date(date);
-    return d.toISOString().split('T')[0];
+    setEvent(updatedEvent);
   };
 
   if (!event) {

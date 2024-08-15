@@ -1,3 +1,5 @@
+// Full path: src/pages/Home.js
+
 import React, { useState, useEffect } from 'react';
 import { Button, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import EventList from '../components/EventList';

@@ -1,4 +1,7 @@
+// Full path: backend/controllers/eventController.js
+
 const Event = require('../models/Event');
+const mongoose = require('mongoose');
 
 exports.getAllEvents = async (req, res) => {
   try {
@@ -12,7 +15,14 @@ exports.getAllEvents = async (req, res) => {
 
 exports.getEventById = async (req, res) => {
   try {
-    const event = await Event.findById(req.params.id);
+    const { id } = req.params;
+
+    // Validate the MongoDB ObjectId
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: 'Invalid event ID format' });
+    }
+
+    const event = await Event.findById(id);
     if (!event) {
       return res.status(404).json({ message: 'Event not found' });
     }
@@ -25,7 +35,14 @@ exports.getEventById = async (req, res) => {
 
 exports.updateEventById = async (req, res) => {
   try {
-    const updatedEvent = await Event.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const { id } = req.params;
+
+    // Validate the MongoDB ObjectId
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: 'Invalid event ID format' });
+    }
+
+    const updatedEvent = await Event.findByIdAndUpdate(id, req.body, { new: true });
     if (!updatedEvent) {
       return res.status(404).json({ message: 'Event not found' });
     }
@@ -38,7 +55,14 @@ exports.updateEventById = async (req, res) => {
 
 exports.deleteEventById = async (req, res) => {
   try {
-    const deletedEvent = await Event.findByIdAndDelete(req.params.id);
+    const { id } = req.params;
+
+    // Validate the MongoDB ObjectId
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: 'Invalid event ID format' });
+    }
+
+    const deletedEvent = await Event.findByIdAndDelete(id);
     if (!deletedEvent) {
       return res.status(404).json({ message: 'Event not found' });
     }

@@ -1,3 +1,5 @@
+// Full path: backend/utils/loadEvents.js
+
 const fs = require('fs');
 const path = require('path');
 const mongoose = require('mongoose');

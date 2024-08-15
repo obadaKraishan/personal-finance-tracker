@@ -1,4 +1,5 @@
-// src/components/EventList.js
+// Full path: src/components/EventList.js
+
 import React, { useEffect, useState } from 'react';
 import { fetchEvents } from '../services/eventService';
 import EventCard from './EventCard';
@@ -30,7 +31,7 @@ const EventList = () => {
   return (
     <div>
       {events.map((event) => (
-        <EventCard key={event.id} event={event} /> // Use EventCard to render each event
+        <EventCard key={event._id} event={event} /> // Use _id for MongoDB
       ))}
     </div>
   );
