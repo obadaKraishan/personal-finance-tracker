@@ -1,3 +1,5 @@
+// Full path: frontend/src/pages/EventDetails.js
+
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { fetchEventById, deleteEvent } from '../services/eventService';
@@ -41,7 +43,7 @@ const EventDetails = () => {
 
   const handleDeleteClick = async () => {
     try {
-      await deleteEvent(id);
+      await deleteEvent(event._id || event.id); // Use correct ID field
       navigate('/'); // Redirect to home after deletion
     } catch (error) {
       console.error('Error deleting event:', error);
@@ -49,16 +51,21 @@ const EventDetails = () => {
   };
 
   // Add the handleRegisterClick function here
-  const handleRegisterClick = async () => {
-    try {
-      await registerForEvent(event._id); // Ensure you're passing a valid ObjectId
-      alert('Registration successful!');
-      navigate('/my-tickets');
-    } catch (error) {
-      console.error('Error registering for event:', error);
-      alert('Registration failed!');
-    }
-  };
+const handleRegisterClick = async () => {
+  try {
+    console.log("Event ID:", event._id || event.id); // Log event ID to ensure it's defined
+    
+    // Ensure you're passing a valid ObjectId or string ID that matches what your backend expects
+    const eventId = event._id || event.id; // MongoDB usually uses _id
+    await registerForEvent(eventId); 
+    alert('Registration successful!');
+    navigate('/my-tickets');
+  } catch (error) {
+    console.error('Error registering for event:', error.response ? error.response.data : error.message);
+    alert('Registration failed!');
+  }
+};
+
 
   const handleCloseEditDialog = () => {
     setIsEditDialogOpen(false);
