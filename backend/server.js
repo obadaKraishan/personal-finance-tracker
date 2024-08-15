@@ -16,6 +16,7 @@ app.use(express.json()); // Parse JSON bodies
 // API Routes
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/events', require('./routes/eventRoutes')); // This is correct
+app.use('/api/registrations', require('./routes/registrationRoutes')); // Registration routes
 
 // Serve frontend
 if (process.env.NODE_ENV === 'production') {

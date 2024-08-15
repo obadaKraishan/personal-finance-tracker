@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { fetchEventById, deleteEvent } from '../services/eventService';
+import { registerForEvent } from '../services/registrationService'; // Import the registration service
 import {
   Card,
   CardContent,
@@ -44,6 +45,17 @@ const EventDetails = () => {
       navigate('/'); // Redirect to home after deletion
     } catch (error) {
       console.error('Error deleting event:', error);
+    }
+  };
+
+  const handleRegisterClick = async () => {
+    try {
+      await registerForEvent(id); // Register for the event
+      alert('Registration successful!');
+      navigate('/my-tickets'); // Redirect to the tickets page
+    } catch (error) {
+      console.error('Error registering for event:', error);
+      alert('Registration failed!');
     }
   };
 
@@ -120,6 +132,9 @@ const EventDetails = () => {
         </ul>
 
         <Box sx={{ marginTop: 4, display: 'flex', justifyContent: 'space-between' }}>
+          <Button variant="contained" color="primary" onClick={handleRegisterClick}>
+            Register
+          </Button>
           <Button variant="contained" color="primary" onClick={handleEditClick}>
             Edit Event
           </Button>
