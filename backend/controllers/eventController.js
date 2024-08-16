@@ -9,7 +9,13 @@ exports.getAllEvents = async (req, res) => {
     let query = {};
 
     if (date) {
-      query.date = new Date(date);
+      const startOfDay = new Date(date);
+      startOfDay.setUTCHours(0, 0, 0, 0);
+
+      const endOfDay = new Date(date);
+      endOfDay.setUTCHours(23, 59, 59, 999);
+
+      query.date = { $gte: startOfDay, $lte: endOfDay };
     }
 
     if (location) {
