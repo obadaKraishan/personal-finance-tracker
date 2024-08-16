@@ -1,12 +1,18 @@
 const express = require('express');
-const { registerForEvent, getRegistrationsForUser } = require('../controllers/registrationController');
-const { protect } = require('../middleware/authMiddleware'); // Destructure to get the protect middleware
+const Registration = require('../models/Registration');
+const { protect, admin } = require('../middleware/authMiddleware');
 const router = express.Router();
 
-// Route to register for an event
-router.post('/register', protect, registerForEvent);
-
-// Route to get registrations for the logged-in user
-router.get('/my-registrations', protect, getRegistrationsForUser);
+// @route   GET /api/registrations
+// @desc    Get all registrations (Admin only)
+// @access  Admin
+router.get('/', protect, admin, async (req, res) => {
+  try {
+    const registrations = await Registration.find().populate('user event');
+    res.json(registrations);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
 
 module.exports = router;
