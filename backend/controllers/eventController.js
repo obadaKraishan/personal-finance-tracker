@@ -1,5 +1,3 @@
-// Full path: backend/controllers/eventController.js
-
 const Event = require('../models/Event');
 const mongoose = require('mongoose');
 
