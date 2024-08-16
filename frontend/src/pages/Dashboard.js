@@ -1,5 +1,3 @@
-// Full path: frontend/src/pages/Dashboard.js
-
 import React, { useEffect, useState } from 'react';
 import { fetchDashboardStats } from '../services/dashboardService';
 import { Card, CardContent, Typography, Grid } from '@mui/material';

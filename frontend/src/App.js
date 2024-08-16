@@ -8,6 +8,7 @@ import EventDetails from './pages/EventDetails';
 import AddEventForm from './components/AddEventForm'; // Correct import path
 import Navbar from './components/Navbar';
 import Tickets from './pages/Tickets'; // Import the Tickets page
+import Dashboard from './pages/Dashboard'; // Import the Dashboard page
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function AuthRoutes() {
       <Route path="/events/:id" element={user ? <EventDetails /> : <Navigate to="/login" />} />
       <Route path="/my-tickets" element={user ? <Tickets /> : <Navigate to="/login" />} /> {/* Tickets page */}
       <Route path="/add-event" element={user && (user.role === 'Organizer' || user.role === 'Admin') ? <AddEventForm /> : <Navigate to="/" />} />
+      <Route path="/dashboard" element={user && user.role === 'admin' ? <Dashboard /> : <Navigate to="/" />} /> {/* Admin Dashboard */}
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>
   );

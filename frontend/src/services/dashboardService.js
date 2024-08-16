@@ -1,5 +1,3 @@
-// Full path: frontend/src/services/dashboardService.js
-
 import api from './api';
 
 export const fetchDashboardStats = async () => {

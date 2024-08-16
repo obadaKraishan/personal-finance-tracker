@@ -1,5 +1,3 @@
-// Full path: backend/controllers/dashboardController.js
-
 const Event = require('../models/Event');
 const User = require('../models/User');
 
