@@ -5,7 +5,24 @@ const mongoose = require('mongoose');
 
 exports.getAllEvents = async (req, res) => {
   try {
-    const events = await Event.find({});
+    const { date, location, category } = req.query;
+
+    // Build the query object dynamically based on the filters provided
+    let query = {};
+
+    if (date) {
+      query.date = new Date(date);
+    }
+
+    if (location) {
+      query['location.city'] = { $regex: location, $options: 'i' }; // Case-insensitive regex search
+    }
+
+    if (category) {
+      query.categories = { $regex: category, $options: 'i' }; // Case-insensitive regex search
+    }
+
+    const events = await Event.find(query);
     res.json(events);
   } catch (error) {
     console.error('Error fetching events:', error);

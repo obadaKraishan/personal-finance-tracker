@@ -1,8 +1,9 @@
 import api from './api';
 
-export const fetchEvents = async () => {
+export const fetchEvents = async (filters = {}) => {
   try {
-    const response = await api.get('/events');
+    const query = new URLSearchParams(filters).toString(); // Convert filters object to query string
+    const response = await api.get(`/events?${query}`);
     return response.data;
   } catch (error) {
     console.error('Failed to fetch events:', error);
