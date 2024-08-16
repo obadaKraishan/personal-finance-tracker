@@ -2,21 +2,20 @@
 
 const Event = require('../models/Event');
 const User = require('../models/User');
-const Registration = require('../models/Registration');
 
+// Controller function to get dashboard statistics
 exports.getDashboardStats = async (req, res) => {
   try {
     const totalEvents = await Event.countDocuments();
     const totalUsers = await User.countDocuments();
-    const totalRegistrations = await Registration.countDocuments();
-
-    const upcomingEvents = await Event.find({ date: { $gte: new Date() } }).sort('date').limit(5);
+    const totalOrganizers = await User.countDocuments({ role: 'organizer' });
+    const totalAttendees = await User.countDocuments({ role: 'attendee' });
 
     res.json({
       totalEvents,
       totalUsers,
-      totalRegistrations,
-      upcomingEvents
+      totalOrganizers,
+      totalAttendees,
     });
   } catch (error) {
     console.error('Error fetching dashboard stats:', error);
