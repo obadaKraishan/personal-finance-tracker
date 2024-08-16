@@ -18,6 +18,7 @@ const Dashboard = () => {
         users: [],
         registrations: [],
     });
+    const [loading, setLoading] = useState(true);
     const [openDialog, setOpenDialog] = useState(false);
     const [dialogTitle, setDialogTitle] = useState('');
     const [dialogContent, setDialogContent] = useState(null);
@@ -26,6 +27,7 @@ const Dashboard = () => {
         const loadStats = async () => {
             try {
                 const data = await fetchDashboardStats();
+                console.log('Fetched Data:', data);
                 setStats({
                     totalEvents: data.totalEvents || 0,
                     totalUsers: data.totalUsers || 0,
@@ -36,8 +38,10 @@ const Dashboard = () => {
                     users: data.users || [],
                     registrations: data.registrations || [],
                 });
+                setLoading(false);
             } catch (error) {
                 console.error('Error loading dashboard stats:', error);
+                setLoading(false);
             }
         };
         loadStats();
@@ -69,11 +73,13 @@ const Dashboard = () => {
 
     const handleCardClick = (type) => {
         let title = '';
-        let content = '';
+        let content = null;
+
+        console.log('Stats on Card Click:', stats);
 
         if (type === 'events') {
             title = 'All Events';
-            content = stats.totalEvents > 0 && stats.upcomingEvents.length > 0 ? (
+            content = stats.upcomingEvents.length > 0 ? (
                 <List>
                     {stats.upcomingEvents.map((event) => (
                         <ListItem key={event._id}>
@@ -86,7 +92,7 @@ const Dashboard = () => {
             );
         } else if (type === 'users') {
             title = 'All Users';
-            content = stats.totalUsers > 0 && stats.users.length > 0 ? (
+            content = stats.users.length > 0 ? (
                 <List>
                     {stats.users.map((user) => (
                         <ListItem key={user._id}>
@@ -99,7 +105,7 @@ const Dashboard = () => {
             );
         } else if (type === 'registrations') {
             title = 'All Registrations';
-            content = stats.totalRegistrations > 0 && stats.registrations.length > 0 ? (
+            content = stats.registrations.length > 0 ? (
                 <List>
                     {stats.registrations.map((registration) => (
                         <ListItem key={registration._id}>
@@ -112,14 +118,23 @@ const Dashboard = () => {
             );
         }
 
+        console.log('Dialog Content:', content);
+
+        // Adding extra debugging to see if content is correctly rendered
+        console.log('Rendered Dialog Content:', content);
+
         setDialogTitle(title);
-        setDialogContent(content);
+        setDialogContent(content ? content : <Typography>No data available.</Typography>);
         setOpenDialog(true);
     };
 
     const handleCloseDialog = () => {
         setOpenDialog(false);
     };
+
+    if (loading) {
+        return <Typography>Loading...</Typography>;
+    }
 
     return (
         <>
@@ -164,7 +179,7 @@ const Dashboard = () => {
 
             <Dialog open={openDialog} onClose={handleCloseDialog}>
                 <DialogTitle>{dialogTitle}</DialogTitle>
-                <DialogContent className="dialog-content">
+                <DialogContent>
                     {dialogContent}
                 </DialogContent>
                 <Button onClick={handleCloseDialog} color="primary">Close</Button>
