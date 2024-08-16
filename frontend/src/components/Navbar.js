@@ -14,6 +14,11 @@ const Navbar = () => {
         </Typography>
         {user ? (
           <>
+            {user.role === 'admin' && (
+              <Button color="inherit" component={Link} to="/dashboard">
+                Dashboard
+              </Button>
+            )}
             <Button color="inherit" onClick={handleLogout}>
               Logout
             </Button>

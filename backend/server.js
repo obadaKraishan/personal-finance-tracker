@@ -5,6 +5,7 @@ const express = require('express');
 const path = require('path');
 const connectDB = require('./config/db'); // Ensure this is correctly defined and connects to your DB
 const app = express();
+const dashboardRoutes = require('./routes/dashboardRoutes'); // Import your dashboard routes
 
 // Connect to the Database
 connectDB(); // Make sure your DB connection is working as expected
@@ -19,6 +20,7 @@ app.use(express.json()); // Parse JSON bodies
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/events', require('./routes/eventRoutes'));
 app.use('/api/registrations', require('./routes/registrationRoutes')); // Ensure this route is correct
+app.use('/api/dashboard', dashboardRoutes);  // Add this line to include dashboard routes
 
 // Serve frontend
 if (process.env.NODE_ENV === 'production') {
