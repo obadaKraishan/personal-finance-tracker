@@ -13,7 +13,10 @@ const Dashboard = () => {
         totalUsers: 0,
         totalRegistrations: 0,
         popularEvents: [],
-        registrationTrends: []
+        registrationTrends: [],
+        upcomingEvents: [],
+        users: [],
+        registrations: [],
     });
     const [openDialog, setOpenDialog] = useState(false);
     const [dialogTitle, setDialogTitle] = useState('');
@@ -23,7 +26,16 @@ const Dashboard = () => {
         const loadStats = async () => {
             try {
                 const data = await fetchDashboardStats();
-                setStats(data);
+                setStats({
+                    totalEvents: data.totalEvents || 0,
+                    totalUsers: data.totalUsers || 0,
+                    totalRegistrations: data.totalRegistrations || 0,
+                    popularEvents: data.popularEvents || [],
+                    registrationTrends: data.registrationTrends || [],
+                    upcomingEvents: data.upcomingEvents || [],
+                    users: data.users || [],
+                    registrations: data.registrations || [],
+                });
             } catch (error) {
                 console.error('Error loading dashboard stats:', error);
             }
@@ -61,7 +73,7 @@ const Dashboard = () => {
 
         if (type === 'events') {
             title = 'All Events';
-            content = stats.upcomingEvents.length > 0 ? (
+            content = stats.totalEvents > 0 && stats.upcomingEvents.length > 0 ? (
                 <List>
                     {stats.upcomingEvents.map((event) => (
                         <ListItem key={event._id}>
@@ -74,7 +86,7 @@ const Dashboard = () => {
             );
         } else if (type === 'users') {
             title = 'All Users';
-            content = stats.users.length > 0 ? (
+            content = stats.totalUsers > 0 && stats.users.length > 0 ? (
                 <List>
                     {stats.users.map((user) => (
                         <ListItem key={user._id}>
@@ -87,7 +99,7 @@ const Dashboard = () => {
             );
         } else if (type === 'registrations') {
             title = 'All Registrations';
-            content = stats.registrations.length > 0 ? (
+            content = stats.totalRegistrations > 0 && stats.registrations.length > 0 ? (
                 <List>
                     {stats.registrations.map((registration) => (
                         <ListItem key={registration._id}>
