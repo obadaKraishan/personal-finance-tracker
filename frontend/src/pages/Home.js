@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Drawer, IconButton } from '@mui/material';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Drawer, IconButton, CircularProgress } from '@mui/material';
 import EventList from '../components/EventList';
 import AddEventForm from '../components/AddEventForm';
 import { fetchEvents } from '../services/eventService';
@@ -14,16 +14,19 @@ const Home = () => {
     location: '',
     category: '',
   });
-  const [searchTimeout, setSearchTimeout] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const [isFilterDrawerOpen, setIsFilterDrawerOpen] = useState(false);
 
-  useEffect(() => {
-    const loadEvents = async () => {
-      const data = await fetchEvents(filters);
-      setEvents(data);
-    };
-    loadEvents();
+  const loadEvents = useCallback(async () => {
+    setIsLoading(true);
+    const data = await fetchEvents(filters);
+    setEvents(data);
+    setIsLoading(false);
   }, [filters]);
+
+  useEffect(() => {
+    loadEvents();
+  }, [loadEvents]);
 
   const handleOpenAddDialog = () => {
     setIsAddDialogOpen(true);
@@ -40,14 +43,10 @@ const Home = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    if (searchTimeout) clearTimeout(searchTimeout);
-
-    setSearchTimeout(setTimeout(() => {
-      setFilters((prevFilters) => ({
-        ...prevFilters,
-        [name]: value,
-      }));
-    }, 500));
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      [name]: value,
+    }));
   };
 
   const handleClearFilters = () => {
@@ -131,7 +130,13 @@ const Home = () => {
         </div>
       </Drawer>
 
-      <EventList events={events} />
+      {isLoading ? (
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh' }}>
+          <CircularProgress />
+        </div>
+      ) : (
+        <EventList events={events} />
+      )}
       
       <Dialog open={isAddDialogOpen} onClose={handleCloseAddDialog} fullWidth maxWidth="sm">
         <DialogTitle>Add New Event</DialogTitle>
