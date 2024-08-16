@@ -1,18 +1,17 @@
+// backend/routes/registrationRoutes.js
 const express = require('express');
-const Registration = require('../models/Registration');
+const { getRegistrations, registerForEvent, getRegistrationsForUser } = require('../controllers/registrationController');
 const { protect, admin } = require('../middleware/authMiddleware');
+
 const router = express.Router();
 
-// @route   GET /api/registrations
-// @desc    Get all registrations (Admin only)
-// @access  Admin
-router.get('/', protect, admin, async (req, res) => {
-  try {
-    const registrations = await Registration.find().populate('user event');
-    res.json(registrations);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-});
+// Route to get all registrations (Admin only)
+router.get('/', protect, admin, getRegistrations);
+
+// Route to register for an event
+router.post('/register', protect, registerForEvent);
+
+// Route to get registrations for the logged-in user
+router.get('/my-registrations', protect, getRegistrationsForUser);
 
 module.exports = router;

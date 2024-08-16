@@ -1,6 +1,6 @@
+// backend/controllers/userController.js
 const User = require('../models/User');
 
-// Controller to get all users (admin only)
 const getAllUsers = async (req, res) => {
   try {
     const users = await User.find();
