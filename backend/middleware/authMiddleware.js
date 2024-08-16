@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 
-const authMiddleware = (req, res, next) => {
+// Middleware to protect routes and attach the user to the request object
+const protect = (req, res, next) => {
   // Extract the Authorization header
   const authHeader = req.header('Authorization');
   console.log('Authorization Header:', authHeader); // Log the Authorization header
@@ -38,4 +39,18 @@ const authMiddleware = (req, res, next) => {
   }
 };
 
-module.exports = authMiddleware;
+// Middleware to check if the user has admin privileges
+const admin = (req, res, next) => {
+  if (req.user && req.user.role === 'admin') {
+    next();
+  } else {
+    console.log('Admin access only');
+    res.status(403).json({ message: 'Admin access only' });
+  }
+};
+
+// Export the middleware functions
+module.exports = {
+  protect,
+  admin,
+};

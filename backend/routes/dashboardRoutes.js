@@ -1,5 +1,3 @@
-// Full path: backend/routes/dashboardRoutes.js
-
 const express = require('express');
 const { getDashboardStats } = require('../controllers/dashboardController');
 const { protect, admin } = require('../middleware/authMiddleware');
