@@ -3,7 +3,14 @@ import { fetchDashboardStats } from '../services/dashboardService';
 import { Card, CardContent, Typography, Grid, Dialog, DialogTitle, DialogContent, List, ListItem, ListItemText, Button } from '@mui/material';
 
 const Dashboard = () => {
-  const [stats, setStats] = useState(null);
+  const [stats, setStats] = useState({
+    totalEvents: 0,
+    totalUsers: 0,
+    totalRegistrations: 0,
+    upcomingEvents: [],
+    users: [],
+    registrations: [],
+  });
   const [openDialog, setOpenDialog] = useState(false);
   const [dialogTitle, setDialogTitle] = useState('');
   const [dialogContent, setDialogContent] = useState(null);
@@ -24,11 +31,11 @@ const Dashboard = () => {
     let title = '';
     let content = '';
 
-    if (type === 'events' && stats.upcomingEvents) {
-      title = 'Upcoming Events';
+    if (type === 'events') {
+      title = 'All Events';
       content = stats.upcomingEvents.length > 0 ? (
         <List>
-          {stats.upcomingEvents.map(event => (
+          {stats.upcomingEvents.map((event) => (
             <ListItem key={event._id}>
               <ListItemText primary={`${event.name} - ${new Date(event.date).toDateString()}`} />
             </ListItem>
@@ -39,9 +46,9 @@ const Dashboard = () => {
       );
     } else if (type === 'users') {
       title = 'All Users';
-      content = stats.totalUsers > 0 ? (
+      content = stats.users.length > 0 ? (
         <List>
-          {stats.users.map(user => (
+          {stats.users.map((user) => (
             <ListItem key={user._id}>
               <ListItemText primary={`${user.name} - ${user.email}`} />
             </ListItem>
@@ -52,9 +59,9 @@ const Dashboard = () => {
       );
     } else if (type === 'registrations') {
       title = 'All Registrations';
-      content = stats.totalRegistrations > 0 ? (
+      content = stats.registrations.length > 0 ? (
         <List>
-          {stats.registrations.map(registration => (
+          {stats.registrations.map((registration) => (
             <ListItem key={registration._id}>
               <ListItemText primary={`${registration.user.name} registered for ${registration.event.name}`} />
             </ListItem>
