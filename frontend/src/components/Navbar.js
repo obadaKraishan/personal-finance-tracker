@@ -14,7 +14,7 @@ const Navbar = () => {
         </Typography>
         {user ? (
           <>
-            {user.role === 'admin' && (
+            {user.role === 'Admin' && (
               <Button color="inherit" component={Link} to="/dashboard">
                 Dashboard
               </Button>

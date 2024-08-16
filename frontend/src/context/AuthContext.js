@@ -9,7 +9,8 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     if (token) {
-      // Fetch or validate user data based on the token if needed
+      const savedUser = JSON.parse(localStorage.getItem('user')); // Save the user info
+      setUser(savedUser); // Set user state from localStorage
     }
   }, [token]);
 
@@ -18,6 +19,7 @@ export const AuthProvider = ({ children }) => {
     setUser(data.user);
     setToken(data.token);
     localStorage.setItem('token', data.token);
+    localStorage.setItem('user', JSON.stringify(data.user)); // Save user info in localStorage
   };
 
   const handleRegister = async (userData) => {
@@ -25,12 +27,14 @@ export const AuthProvider = ({ children }) => {
     setUser(data.user);
     setToken(data.token);
     localStorage.setItem('token', data.token);
+    localStorage.setItem('user', JSON.stringify(data.user)); // Save user info in localStorage
   };
 
   const handleLogout = () => {
     setUser(null);
     setToken(null);
     localStorage.removeItem('token');
+    localStorage.removeItem('user'); // Remove user info from localStorage
   };
 
   return (

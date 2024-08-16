@@ -5,10 +5,10 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import EventDetails from './pages/EventDetails';
-import AddEventForm from './components/AddEventForm'; // Correct import path
+import AddEventForm from './components/AddEventForm';
 import Navbar from './components/Navbar';
-import Tickets from './pages/Tickets'; // Import the Tickets page
-import Dashboard from './pages/Dashboard'; // Import the Dashboard page
+import Tickets from './pages/Tickets';
+import Dashboard from './pages/Dashboard';
 
 function App() {
   return (
@@ -30,9 +30,9 @@ function AuthRoutes() {
       <Route path="/login" element={!user ? <Login /> : <Navigate to="/" />} />
       <Route path="/register" element={!user ? <Register /> : <Navigate to="/" />} />
       <Route path="/events/:id" element={user ? <EventDetails /> : <Navigate to="/login" />} />
-      <Route path="/my-tickets" element={user ? <Tickets /> : <Navigate to="/login" />} /> {/* Tickets page */}
+      <Route path="/my-tickets" element={user ? <Tickets /> : <Navigate to="/login" />} />
       <Route path="/add-event" element={user && (user.role === 'Organizer' || user.role === 'Admin') ? <AddEventForm /> : <Navigate to="/" />} />
-      <Route path="/dashboard" element={user && user.role === 'admin' ? <Dashboard /> : <Navigate to="/" />} /> {/* Admin Dashboard */}
+      <Route path="/dashboard" element={user && user.role === 'Admin' ? <Dashboard /> : <Navigate to="/" />} />
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>
   );
