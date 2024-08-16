@@ -14,7 +14,7 @@ const Navbar = () => {
         </Typography>
         {user ? (
           <>
-            {user.role === 'Admin' && (
+            {user.role.toLowerCase() === 'admin' && ( // Convert role to lowercase
               <Button color="inherit" component={Link} to="/dashboard">
                 Dashboard
               </Button>

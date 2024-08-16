@@ -41,7 +41,7 @@ const protect = (req, res, next) => {
 
 // Middleware to check if the user has admin privileges
 const admin = (req, res, next) => {
-  if (req.user && req.user.role === 'admin') {
+  if (req.user && req.user.role.toLowerCase() === 'admin') { // Ensure role comparison is case insensitive
     next();
   } else {
     console.log('Admin access only');

@@ -1,6 +1,5 @@
 import axios from 'axios';
 
-// Create an axios instance
 const api = axios.create({
   baseURL: 'http://localhost:5001/api', // This should be your base URL
   headers: {
@@ -8,12 +7,12 @@ const api = axios.create({
   },
 });
 
-// Add a request interceptor to include the token in every request
+// Add a request interceptor to include the token in the headers
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('token'); // Retrieve token from localStorage
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+      config.headers.Authorization = `Bearer ${token}`; // Set the Authorization header
     }
     return config;
   },

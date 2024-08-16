@@ -4,6 +4,7 @@ import { Card, CardContent, Typography, Grid } from '@mui/material';
 
 const Dashboard = () => {
   const [stats, setStats] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const loadStats = async () => {
@@ -12,10 +13,15 @@ const Dashboard = () => {
         setStats(data);
       } catch (error) {
         console.error('Error loading dashboard stats:', error);
+        setError(error.message);
       }
     };
     loadStats();
   }, []);
+
+  if (error) {
+    return <p>Error loading dashboard data: {error}</p>;
+  }
 
   if (!stats) {
     return <p>Loading dashboard data...</p>;
@@ -43,7 +49,7 @@ const Dashboard = () => {
         <Card>
           <CardContent>
             <Typography variant="h5">Total Registrations</Typography>
-            <Typography variant="h4">{stats.totalRegistrations}</Typography>
+            <Typography variant="h4">{stats.totalRegistrations || 0}</Typography>
           </CardContent>
         </Card>
       </Grid>
@@ -52,13 +58,17 @@ const Dashboard = () => {
           <CardContent>
             <Typography variant="h5">Upcoming Events</Typography>
             <ul>
-              {stats.upcomingEvents.map((event) => (
-                <li key={event._id}>
-                  <Typography variant="body1">
-                    {event.name} - {new Date(event.date).toDateString()}
-                  </Typography>
-                </li>
-              ))}
+              {stats.upcomingEvents && stats.upcomingEvents.length > 0 ? (
+                stats.upcomingEvents.map((event) => (
+                  <li key={event._id}>
+                    <Typography variant="body1">
+                      {event.name} - {new Date(event.date).toDateString()}
+                    </Typography>
+                  </li>
+                ))
+              ) : (
+                <Typography variant="body1">No upcoming events.</Typography>
+              )}
             </ul>
           </CardContent>
         </Card>

@@ -31,8 +31,8 @@ function AuthRoutes() {
       <Route path="/register" element={!user ? <Register /> : <Navigate to="/" />} />
       <Route path="/events/:id" element={user ? <EventDetails /> : <Navigate to="/login" />} />
       <Route path="/my-tickets" element={user ? <Tickets /> : <Navigate to="/login" />} />
-      <Route path="/add-event" element={user && (user.role === 'Organizer' || user.role === 'Admin') ? <AddEventForm /> : <Navigate to="/" />} />
-      <Route path="/dashboard" element={user && user.role === 'Admin' ? <Dashboard /> : <Navigate to="/" />} />
+      <Route path="/add-event" element={user && (user.role.toLowerCase() === 'organizer' || user.role.toLowerCase() === 'admin') ? <AddEventForm /> : <Navigate to="/" />} />
+      <Route path="/dashboard" element={user && user.role.toLowerCase() === 'admin' ? <Dashboard /> : <Navigate to="/" />} />
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>
   );
