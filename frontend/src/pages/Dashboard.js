@@ -19,7 +19,7 @@ const Dashboard = () => {
     const loadStats = async () => {
       try {
         const data = await fetchDashboardStats();
-        console.log('Fetched Dashboard Stats:', data); // Log the fetched data
+        console.log('Fetched Dashboard Stats:', data);
 
         // Ensure the arrays are at least empty arrays if not provided
         setStats({
@@ -41,8 +41,8 @@ const Dashboard = () => {
 
     if (type === 'events') {
       title = 'All Events';
-      console.log('Upcoming Events:', stats.upcomingEvents); // Log upcoming events
-      content = stats.upcomingEvents && stats.upcomingEvents.length > 0 ? (
+      console.log('Upcoming Events:', stats.upcomingEvents);
+      content = stats.upcomingEvents.length > 0 ? (
         <List>
           {stats.upcomingEvents.map((event) => (
             <ListItem key={event._id}>
@@ -55,8 +55,8 @@ const Dashboard = () => {
       );
     } else if (type === 'users') {
       title = 'All Users';
-      console.log('Users:', stats.users); // Log users
-      content = stats.users && stats.users.length > 0 ? (
+      console.log('Users:', stats.users);
+      content = stats.users.length > 0 ? (
         <List>
           {stats.users.map((user) => (
             <ListItem key={user._id}>
@@ -69,8 +69,8 @@ const Dashboard = () => {
       );
     } else if (type === 'registrations') {
       title = 'All Registrations';
-      console.log('Registrations:', stats.registrations); // Log registrations
-      content = stats.registrations && stats.registrations.length > 0 ? (
+      console.log('Registrations:', stats.registrations);
+      content = stats.registrations.length > 0 ? (
         <List>
           {stats.registrations.map((registration) => (
             <ListItem key={registration._id}>
@@ -91,10 +91,6 @@ const Dashboard = () => {
   const handleCloseDialog = () => {
     setOpenDialog(false);
   };
-
-  if (!stats) {
-    return <Typography>Loading dashboard data...</Typography>;
-  }
 
   return (
     <>
