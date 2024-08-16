@@ -1,6 +1,11 @@
+// Full path: src/pages/Dashboard.js
+
 import React, { useEffect, useState } from 'react';
 import { fetchDashboardStats } from '../services/dashboardService';
 import { Card, CardContent, Typography, Grid, Dialog, DialogTitle, DialogContent, List, ListItem, ListItemText, Button } from '@mui/material';
+import EventIcon from '@mui/icons-material/Event';
+import PeopleIcon from '@mui/icons-material/People';
+import AssignmentIcon from '@mui/icons-material/Assignment';
 
 const Dashboard = () => {
   const [stats, setStats] = useState({
@@ -21,7 +26,6 @@ const Dashboard = () => {
         const data = await fetchDashboardStats();
         console.log('Fetched Dashboard Stats:', data);
 
-        // Ensure the arrays are at least empty arrays if not provided
         setStats({
           ...data,
           upcomingEvents: data.upcomingEvents || [],
@@ -96,24 +100,27 @@ const Dashboard = () => {
     <>
       <Grid container spacing={3}>
         <Grid item xs={12} sm={4}>
-          <Card onClick={() => handleCardClick('events')} style={{ cursor: 'pointer', textAlign: 'center' }}>
+          <Card onClick={() => handleCardClick('events')} className="dashboard-card">
             <CardContent>
+              <EventIcon className="dashboard-icon" />
               <Typography variant="h5">Total Events</Typography>
               <Typography variant="h4">{stats.totalEvents}</Typography>
             </CardContent>
           </Card>
         </Grid>
         <Grid item xs={12} sm={4}>
-          <Card onClick={() => handleCardClick('users')} style={{ cursor: 'pointer', textAlign: 'center' }}>
+          <Card onClick={() => handleCardClick('users')} className="dashboard-card">
             <CardContent>
+              <PeopleIcon className="dashboard-icon" />
               <Typography variant="h5">Total Users</Typography>
               <Typography variant="h4">{stats.totalUsers}</Typography>
             </CardContent>
           </Card>
         </Grid>
         <Grid item xs={12} sm={4}>
-          <Card onClick={() => handleCardClick('registrations')} style={{ cursor: 'pointer', textAlign: 'center' }}>
+          <Card onClick={() => handleCardClick('registrations')} className="dashboard-card">
             <CardContent>
+              <AssignmentIcon className="dashboard-icon" />
               <Typography variant="h5">Total Registrations</Typography>
               <Typography variant="h4">{stats.totalRegistrations || 0}</Typography>
             </CardContent>
@@ -121,7 +128,6 @@ const Dashboard = () => {
         </Grid>
       </Grid>
 
-      {/* Dialog for showing summaries */}
       <Dialog open={openDialog} onClose={handleCloseDialog}>
         <DialogTitle>{dialogTitle}</DialogTitle>
         <DialogContent>

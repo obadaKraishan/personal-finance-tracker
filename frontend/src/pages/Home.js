@@ -1,3 +1,5 @@
+// Full path: src/pages/Home.js
+
 import React, { useState, useEffect, useCallback } from 'react';
 import { Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Drawer, IconButton, CircularProgress } from '@mui/material';
 import EventList from '../components/EventList';
@@ -82,9 +84,17 @@ const Home = () => {
         anchor="left"
         open={isFilterDrawerOpen}
         onClose={() => setIsFilterDrawerOpen(false)}
+        PaperProps={{
+          style: {
+            backgroundColor: '#f7f7f7',
+            padding: '20px',
+            width: '320px',
+            borderRadius: '10px',
+          },
+        }}
       >
-        <div style={{ padding: '20px', width: '300px' }}>
-          <h3>Filter Events</h3>
+        <div>
+          <Typography variant="h5" gutterBottom>Filter Events</Typography>
 
           <TextField
             label="Filter by Date"
@@ -95,6 +105,7 @@ const Home = () => {
             InputLabelProps={{ shrink: true }}
             fullWidth
             margin="normal"
+            variant="outlined"
           />
 
           <TextField
@@ -105,6 +116,7 @@ const Home = () => {
             onChange={handleInputChange}
             fullWidth
             margin="normal"
+            variant="outlined"
           />
 
           <TextField
@@ -115,6 +127,7 @@ const Home = () => {
             onChange={handleInputChange}
             fullWidth
             margin="normal"
+            variant="outlined"
           />
 
           <Button
@@ -137,7 +150,7 @@ const Home = () => {
       ) : (
         <EventList events={events} />
       )}
-      
+
       <Dialog open={isAddDialogOpen} onClose={handleCloseAddDialog} fullWidth maxWidth="sm">
         <DialogTitle>Add New Event</DialogTitle>
         <DialogContent>
