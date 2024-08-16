@@ -1,12 +1,13 @@
 // Full path: src/pages/Home.js
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Drawer, IconButton, CircularProgress } from '@mui/material';
+import { Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Drawer, IconButton, CircularProgress, Typography } from '@mui/material';
 import EventList from '../components/EventList';
 import AddEventForm from '../components/AddEventForm';
 import { fetchEvents } from '../services/eventService';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import ClearIcon from '@mui/icons-material/Clear';
+import '../styles/Home.css';
 
 const Home = () => {
   const [events, setEvents] = useState([]);
@@ -60,14 +61,14 @@ const Home = () => {
   };
 
   return (
-    <div>
-      <h1>Upcoming Events</h1>
+    <div className="home-container">
+      <Typography variant="h2" className="home-title">Upcoming Events</Typography>
 
       <Button
         variant="contained"
         color="primary"
         onClick={handleOpenAddDialog}
-        style={{ marginBottom: '20px' }}
+        className="add-event-button"
       >
         Add New Event
       </Button>
@@ -75,7 +76,7 @@ const Home = () => {
       <IconButton
         color="primary"
         onClick={() => setIsFilterDrawerOpen(true)}
-        style={{ marginLeft: '10px' }}
+        className="filter-icon"
       >
         <FilterListIcon />
       </IconButton>
@@ -144,7 +145,7 @@ const Home = () => {
       </Drawer>
 
       {isLoading ? (
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh' }}>
+        <div className="loading-container">
           <CircularProgress />
         </div>
       ) : (

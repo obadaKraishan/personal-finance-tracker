@@ -1,0 +1,40 @@
+/* Full path: src/styles/Home.css */
+
+.home-container {
+    padding: 20px;
+    background-color: #fafafa;
+    min-height: 100vh;
+}
+
+.home-title {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.add-event-button {
+    display: block;
+    margin: 0 auto 20px;
+    background-color: #1c92d2;
+    color: white;
+}
+
+.filter-icon {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    background-color: #1c92d2;
+    color: white;
+}
+
+.filter-icon:hover {
+    background-color: #0e73a9;
+}
+
+.loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50vh;
+}

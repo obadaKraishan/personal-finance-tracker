@@ -6,6 +6,7 @@ import { Card, CardContent, Typography, Grid, Dialog, DialogTitle, DialogContent
 import EventIcon from '@mui/icons-material/Event';
 import PeopleIcon from '@mui/icons-material/People';
 import AssignmentIcon from '@mui/icons-material/Assignment';
+import '../styles/Dashboard.css';
 
 const Dashboard = () => {
   const [stats, setStats] = useState({
