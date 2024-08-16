@@ -1,0 +1,23 @@
+/* Styles for Dashboard cards */
+.MuiCard-root {
+    transition: all 0.3s ease;
+    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.12);
+  }
+  
+  .MuiCard-root:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.16);
+  }
+  
+  .MuiCardContent-root {
+    text-align: center;
+  }
+  
+  .MuiTypography-h4 {
+    font-weight: bold;
+  }
+  
+  .MuiButtonBase-root {
+    margin: 10px 0;
+  }
+  
